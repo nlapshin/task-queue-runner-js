@@ -60,7 +60,7 @@ Task runner
 ```js
 
 function runTasks() {
-	let tasks = [ taskFactory(500), taskFactory(300), taskFactory(100) ];
+	let tasks = [ taskFactory.bind(null, 500), taskFactory.bind(null, 300), taskFactory.bind(null, 100) ];
 
 	let success = (result, inx) => {
 		console.log("task index - ", inx, ".Task result - ", result);
