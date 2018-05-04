@@ -6,7 +6,7 @@ var TaskQueue = require("./queue");
 describe("parallel", function() {
 	describe("runner", function() {
 		it("parallel", function() {
-			let tasks = [ taskFactory(500), taskFactory(300), taskFactory(100) ];
+			let tasks = [ taskFactory.bind(null, 500), taskFactory.bind(null, 300), taskFactory.bind(null, 100) ];
 			let completeStep = [ 2, 1, 0 ];
 
 			let success = (result, inx) => {
@@ -22,7 +22,7 @@ describe("parallel", function() {
 		});
 
 		it("parallel with limit", function() {
-			let tasks = [ taskFactory(500), taskFactory(300), taskFactory(100) ];
+			let tasks = [ taskFactory.bind(null, 500), taskFactory.bind(null, 300), taskFactory.bind(null, 100) ];
 			let completeStep = [ 0, 1, 2 ];
 
 			let success = (result, inx) => {
@@ -36,7 +36,7 @@ describe("parallel", function() {
 		});
 
 		it("parallel with error", function() {
-			let tasks = [ taskFactory(500), taskFactory(300, false), taskFactory(100) ];
+			let tasks = [ taskFactory.bind(null, 500), taskFactory.bind(null, 300, false), taskFactory.bind(null, 100) ];
 			let completeStep = [ 2, 0 ];
 
 			let success = (result, inx) => {

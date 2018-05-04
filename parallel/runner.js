@@ -9,7 +9,7 @@ module.exports = (tasks, limit=0) => {
 
 			tasks.forEach((task, index) => {
 				let runTask = () => {
-					return task.then(result => {
+					return task().then(result => {
 						var promise = iteratorSuccess.call(context, result, index, tasks);
 
 						complete++;
