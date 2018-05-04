@@ -1,5 +1,5 @@
 {
-  "name": "task-queue",
+  "name": "async-task-queue",
   "version": "1.0.0",
   "description": "This module allows you to run the queue of the asymynchronous tasks in the form of a queue (so far parallel).",
   "main": "index.js",
