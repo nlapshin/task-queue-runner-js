@@ -1,6 +1,6 @@
 # task-queue
 
->>> This module allows you to run the queue of the asynchronous tasks in the form of a queue (so far parallel).
+This module allows you to run the queue of the asynchronous tasks in the form of a queue (so far parallel).
 
 # Install
 

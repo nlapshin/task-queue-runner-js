@@ -6,7 +6,7 @@
   "scripts": {
     "test": "mocha ./test.js"
   },
-  "git": "https://nlapshin1989@bitbucket.org/nlapshin1989/task-queue.git",
+  "git": "git+https://github.com/nlapshin/task-queue-runner-js.git",
   "author": "Nikolay Lapshin <nlapshin1989@gmail.com>",
   "license": "MIT",
   "devDependencies": {
