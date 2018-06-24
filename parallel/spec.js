@@ -57,6 +57,17 @@ describe("parallel", function() {
 			return runFn(success, error);
 		});
 
+		it("parallel without tasks", function() {
+			let tasks = [ ];
+			let completeStep = [ ];
+
+			let success = (result, inx) => {};
+
+			var runFn = runner(tasks);
+
+			return runFn(success);
+		});
+
 		function taskFactory(duration=1000, isSuccess=true) {
 			return new Promise((resolve, reject) => {
 				setTimeout(() => {

@@ -1,11 +1,15 @@
 const Queue = require("./queue");
 
-module.exports = (tasks, limit=0) => {
+module.exports = (tasks=[], limit=0) => {
 	let queue = new Queue(limit);
 
 	return (iteratorSuccess, iteratorError, context=this) => {
 		return new Promise((resolve, reject) => {
 			let complete = 0;
+
+			if (tasks.length == 0) {
+				resolve();
+			};
 
 			tasks.forEach((task, index) => {
 				let runTask = () => {
