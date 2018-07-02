@@ -1,7 +1,9 @@
 const Queue = require("./queue");
+const Counter = require("./counter");
 
-module.exports = (tasks=[], limit=0) => {
+module.exports = (tasks=[], limit=0, retryCount=0) => {
 	let queue = new Queue(limit);
+	let counter = new Counter(tasks, retryCount)
 
 	return (iteratorSuccess, iteratorError, context=this) => {
 		return new Promise((resolve, reject) => {
@@ -14,7 +16,13 @@ module.exports = (tasks=[], limit=0) => {
 			tasks.forEach((task, index) => {
 				let runTask = () => {
 					return task().then(result => {
-						var promise = iteratorSuccess.call(context, result, index, tasks);
+						let promise;
+
+						if (iteratorSuccess) {
+							promise = iteratorSuccess.call(context, result, index, tasks);
+						} else {
+							promise = Promise.resolve();
+						};
 
 						complete++;
 
