@@ -5,12 +5,12 @@ This module allows you to run the queue of the asynchronous tasks in the form of
 # Install
 
 ```sh
-npm install taks-queue
+npm i async-task-queue-runner
 ```
 
 # Usage
 
-Queue constructor
+## Queue constructor
 
 ```js
 
@@ -41,8 +41,8 @@ function runTasks() {
 			};
 
 			queue.addTask(runTask);
-		});	
-	};	
+		});
+	};
 };
 
 function taskFactory(duration=1000, isSuccess=true) {
@@ -55,7 +55,7 @@ function taskFactory(duration=1000, isSuccess=true) {
 };
 ```
 
-Task runner
+## Task runner
 
 ```js
 
@@ -90,7 +90,7 @@ The module allows you to run asynchronous tasks in parallel
 
 it's a task queue class.
 
-limit - number of tasks that run simultaneously in parallel. Default 0(running all tasks in parallel).
+**limit** - number of tasks that run simultaneously in parallel. Default 0 (running all tasks in parallel).
 
 #### Instance methods
 
@@ -106,15 +106,15 @@ Call the next task. In the existing queue, it is called automatically.
 
 The function that creates the queue and allows you to add the necessary handlers to each task in a given context.
 
-tasks - array of asynchronous tasks.
+**tasks** - array of asynchronous tasks.
 
-limit - number of tasks that run simultaneously in parallel. Default 0(running all tasks in parallel). Optionals.
+**limit** - number of tasks that run simultaneously in parallel. Default 0 (running all tasks in parallel). Optional.
 
-success - success function like a promise success function. Optionals.
+**success** - success function like a promise success function. Optional.
 
-error - error function like a promise success function. Optionals.
+**error** - error function like a promise success function. Optional.
 
-context - context for success and error function. Optionals.
+**context** - context for success and error function. Optional.
 
 # License
 
