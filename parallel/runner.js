@@ -32,9 +32,19 @@ module.exports = (tasks=[], limit=0, retryCount=0) => {
 
 						return promise;
 					}, err => {
+						if (!counter.check(index)) {
+							counter.inc(index);
+
+							return runTask();
+						};
+
 						if (iteratorError) {
 							return iteratorError.call(context, err, index).then(() => {
 								complete++;
+
+								if (complete == tasks.length) {
+									resolve();
+								};
 							});
 						};
 

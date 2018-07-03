@@ -68,6 +68,29 @@ describe("parallel", function() {
 			return runFn(success);
 		});
 
+		it("parallel with retry count", function() {
+			let tasks = [ 
+				taskFactoryRetry().bind(null, 10, 0), 
+				taskFactoryRetry().bind(null, 10, 1), 
+				taskFactoryRetry().bind(null, 10, 2), 
+				taskFactoryRetry().bind(null, 10, 3), 
+				taskFactoryRetry().bind(null, 10, 4), 
+				taskFactoryRetry().bind(null, 10, 5)
+			];
+
+			let success = (result, inx) => {
+				assert.include([0, 1, 2, 3], inx);
+			};
+
+			let error = (result, inx) => {
+				assert.include([4, 5], inx);
+
+				return Promise.resolve();
+			};		
+
+			return runner(tasks, 0, 3)(success, error);
+		});
+
 		function taskFactory(duration=1000, isSuccess=true) {
 			return new Promise((resolve, reject) => {
 				setTimeout(() => {
@@ -75,6 +98,25 @@ describe("parallel", function() {
 					else reject("error");
 				}, duration);
 			});
+		};
+
+		function taskFactoryRetry() {
+			let callRetry = null;
+
+			return function (duration=1000, retryCount=2) {
+				if (callRetry === null) {
+					callRetry = 0;
+				} else {
+					callRetry += 1;
+				};
+
+				return new Promise((resolve, reject) => {
+					setTimeout(() => {
+						if (callRetry >= retryCount) resolve("success");
+						else reject("error");
+					}, duration);
+				});
+			};
 		};
 	})
 

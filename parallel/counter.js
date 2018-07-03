@@ -9,6 +9,8 @@ module.exports = class TaskCounter {
 	}
 
 	check(index) {
-		return this.counter[index] == this.maxCount;
+		let curCount = this.counter[index] || 0;
+
+		return curCount == this.maxCount;
 	}
 };

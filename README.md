@@ -102,13 +102,15 @@ It's method push task into queue.
 
 Call the next task. In the existing queue, it is called automatically.
 
-### parallel.runner(tasks, limit)(success, error, context)
+### parallel.runner(tasks, limit, retryCount)(success, error, context)
 
 The function that creates the queue and allows you to add the necessary handlers to each task in a given context.
 
 **tasks** - array of asynchronous tasks.
 
 **limit** - number of tasks that run simultaneously in parallel. Default 0 (running all tasks in parallel). Optional.
+
+**retryCount** - number of attempts to complete the task, if it was completed with an error. Default 0 (without attempting to perform task again). Optional.
 
 **success** - success function like a promise success function. Optional.
 
