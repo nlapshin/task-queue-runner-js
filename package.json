@@ -1,6 +1,6 @@
 {
   "name": "async-task-queue-runner",
-  "version": "1.1.4",
+  "version": "1.2.0",
   "description": "This module allows you to run the queue of the asymynchronous tasks in the form of a queue (so far parallel).",
   "main": "index.js",
   "scripts": {
