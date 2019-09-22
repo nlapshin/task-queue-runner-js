@@ -10,6 +10,10 @@ module.exports = class TaskQueueBus {
 	}
 
 	run() {
+		if (this.queue.length === 0) {
+      return Promise.resolve();
+    };
+
 		return new Promise((resolve, reject) => {
 			while(checkRunning.call(this)) {
 				this.runHandler(successHandler.bind(this), errorHandler.bind(this));
