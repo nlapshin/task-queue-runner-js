@@ -18,8 +18,6 @@ module.exports = class TaskQueueBus {
 			function successHandler() {
 				++this.completed;
 
-				console.log(this.count, this.completed);
-
 				if (this.count === this.completed) {
 					resolve()
 				} else {
@@ -58,38 +56,4 @@ module.exports = class TaskQueueBus {
 
 		++this.running
 	}
-
-		// while(checkRunning.call(this)) {
-		// 	const task = this.queue.shift();
-
-		// 	task().then(() => {
-		// 		--this.running;
-		// 		this.run();
-		// 	});
-
-		// 	++this.running;
-    // }
-
-    // if (this.queue.length === 0) {
-    //   done()
-    // }
-
-		// function checkRunning() {
-		// 	if (!this.queue.length) return false;
-		// 	if (!this.limit) return true;
-
-		// 	return this.running < this.limit;
-		// };
-
-
-  // runHandler() {
-  //   const task = this.queue.shift();
-
-  //   task().then(() => {
-  //     --this.running;
-  //     this.run();
-  //   });
-
-  //   ++this.running;
-  // }
 };
