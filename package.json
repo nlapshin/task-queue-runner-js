@@ -14,10 +14,12 @@
   "license": "MIT",
   "devDependencies": {
     "chai": "^4.1.2",
+    "delay": "^4.3.0",
     "mocha": "^5.1.1"
   },
   "bugs": {
     "url": "https://github.com/nlapshin/task-queue-runner-js/issues"
   },
-  "homepage": "https://github.com/nlapshin/task-queue-runner-js#readme"
+  "homepage": "https://github.com/nlapshin/task-queue-runner-js#readme",
+  "dependencies": {}
 }

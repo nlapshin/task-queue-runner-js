@@ -1,7 +1,9 @@
-var assert = require("chai").assert;
+const { assert } = require("chai");
+const delay = require('delay');
 
-var runner = require("./runner");
-var TaskQueue = require("./queue");
+const runner = require("./runner");
+const TaskQueue = require("./queue");
+const utils = require('./utils');
 
 describe("parallel", function() {
 	describe("runner", function() {
@@ -69,12 +71,12 @@ describe("parallel", function() {
 		});
 
 		it("parallel with retry count", function() {
-			let tasks = [ 
-				taskFactoryRetry().bind(null, 10, 0), 
-				taskFactoryRetry().bind(null, 10, 1), 
-				taskFactoryRetry().bind(null, 10, 2), 
-				taskFactoryRetry().bind(null, 10, 3), 
-				taskFactoryRetry().bind(null, 10, 4), 
+			let tasks = [
+				taskFactoryRetry().bind(null, 10, 0),
+				taskFactoryRetry().bind(null, 10, 1),
+				taskFactoryRetry().bind(null, 10, 2),
+				taskFactoryRetry().bind(null, 10, 3),
+				taskFactoryRetry().bind(null, 10, 4),
 				taskFactoryRetry().bind(null, 10, 5)
 			];
 
@@ -86,7 +88,7 @@ describe("parallel", function() {
 				assert.include([4, 5], inx);
 
 				return Promise.resolve();
-			};		
+			};
 
 			return runner(tasks, 0, 3)(success, error);
 		});
@@ -269,5 +271,57 @@ describe("parallel", function() {
 				}, duration);
 			});
 		};
+	});
+
+	describe('utils', () => {
+		describe('forEachParallel', async() => {
+			it('full parallel', async() => {
+				let output = [];
+
+				await utils.forEachParallel([1, 2, 3, 4, 5], async(num, index) => {
+					await delay(100);
+
+					output.push(num + 1)
+				});
+
+				assert.deepEqual(output, [2,3,4,5,6])
+			});
+
+			it('parallel with limit', async() => {
+				let output = [];
+
+				await utils.forEachParallel([1, 2, 3, 4, 5], async(num, index) => {
+					await delay(100);
+
+					output.push(num + 1)
+				}, 2);
+
+				assert.deepEqual(output, [2,3,4,5,6])
+			});
+
+			it('parallel with error', async() => {
+				let output = [];
+
+				try {
+					await utils.forEachParallel([1, 2, 3, 4, 5], async(num, index) => {
+						await delay(100);
+
+						if (num === 3) {
+							throw 'error';
+						}
+
+						output.push(num + 1)
+					}, 2);
+
+					throw "test should not success";
+				} catch(error) {
+					assert.equal(error, 'error');
+
+					assert.deepEqual(output, [2,3,5])
+
+					return Promise.resolve();
+				}
+			});
+		});
 	});
 })
