@@ -1,23 +1,34 @@
 module.exports = class TaskBus {
-	constructor(tasks, limit) {
+	constructor(tasks, limit, maxRetryCount) {
 		this.limit = limit;
+		this.maxRetryCount = maxRetryCount;
+
 		this.running = 0;
 		this.completed = 0;
 		this.done = false;
+		this.tasks = [];
 
-		this.tasks = tasks;
-	}
-
-	add(task) {
-		this.tasks.push(task);
+		tasks.forEach(task => this.add(task))
 	}
 
 	count() {
 		return this.tasks.length;
 	}
 
+	isDone() {
+		return this.count() === 0 && this.running === 0;
+	}
+
+	add(task, retryCount = 0) {
+		this.tasks.push({ task, retryCount});
+	}
+
+	addToStart(task, retryCount = 0) {
+		this.tasks.unshift({ task, retryCount} );
+	}
+
 	run() {
-		if (this.queue.length === 0) {
+		if (this.count() === 0) {
       return Promise.resolve();
     }
 
@@ -27,9 +38,7 @@ module.exports = class TaskBus {
 			}
 
 			function successHandler() {
-				++this.completed;
-
-				if (this.count === this.completed) {
+				if (this.isDone()) {
 					resolve()
 				} else {
 					this.runHandler(successHandler.bind(this), errorHandler.bind(this));
@@ -37,14 +46,14 @@ module.exports = class TaskBus {
 			}
 
 			function errorHandler(error) {
-				this.queue = [];
+				this.tasks = [];
 				this.done = true;
 
 				reject(error);
 			}
 
 			function checkRunning() {
-				if (!this.queue.length) return false;
+				if (this.count() === 0) return false;
 				if (!this.limit) return true;
 
 				return this.running < this.limit;
@@ -53,17 +62,26 @@ module.exports = class TaskBus {
 	}
 
 	runHandler(success, error) {
-		if (this.queue.length === 0) {
+		if (this.count() === 0) {
 			return;
 		}
 
-		const task = this.queue.shift();
+		const { task, retryCount } = this.tasks.shift();
 
 		task().then(() => {
 			--this.running;
 
 			success()
-		}, error);
+		}, () => {
+			if (retryCount < this.maxRetryCount) {
+				this.addToStart(task, retryCount + 1);
+				--this.running;
+
+				return success();
+			}
+
+			error()
+		});
 
 		++this.running
 	}

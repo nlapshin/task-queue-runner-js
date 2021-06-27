@@ -1,3 +1,1 @@
-describe("task-queue", function() {
-	require("./parallel/spec");
-});
+require("./src/index.spec");
