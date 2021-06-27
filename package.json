@@ -4,7 +4,10 @@
   "description": "This module allows you to run the queue of the asymynchronous tasks in the form of a queue (so far parallel).",
   "main": "index.js",
   "scripts": {
-    "test": "mocha ./test.js"
+    "test": "mocha ./test.js",
+    "lint": "npx eslint src",
+    "lint-fix": "npx eslint src --fix",
+    "pre-commit": "npm run lint && npm run test"
   },
   "repository": {
     "type": "git",
@@ -15,7 +18,14 @@
   "devDependencies": {
     "chai": "^4.3.4",
     "delay": "^5.0.0",
+    "eslint": "^7.29.0",
+    "husky": "^6.0.0",
     "mocha": "^9.0.1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run pre-commit"
+    }
   },
   "bugs": {
     "url": "https://github.com/nlapshin/task-queue-runner-js/issues"
