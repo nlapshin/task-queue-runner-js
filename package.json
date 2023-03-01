@@ -15,7 +15,7 @@
   "devDependencies": {
     "chai": "^4.1.2",
     "delay": "^4.3.0",
-    "mocha": "^5.1.1"
+    "mocha": "^10.2.0"
   },
   "bugs": {
     "url": "https://github.com/nlapshin/task-queue-runner-js/issues"
